@@ -10,9 +10,45 @@ var receptacles = [];
 var widthReceptacle = canvas.width/3;
 var heightReceptacle = 20;
 
-drawBall();
+// movement
+var rightPressed = false;
+var leftPressed = false;
+
 initReceptacle();
-drawReceptacles();
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = true;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = false;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = false;
+    }
+}
+
+function draw() {
+
+  // clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  drawBall();
+  drawReceptacles();
+
+  moveBall();
+}
+
+setInterval(draw, 10);
+
 
 function drawBall() {
   ctx.beginPath();
@@ -20,6 +56,18 @@ function drawBall() {
   ctx.fillStyle = "#0095DD";
   ctx.fill();
   ctx.closePath();
+}
+
+function moveBall() {
+  if(leftPressed)
+  {
+    ballX -= 1;
+  } else if(rightPressed)
+  {
+    ballX += 1;
+  }else {
+    ballY += 0.75;
+  }
 }
 
 function initReceptacle() {
