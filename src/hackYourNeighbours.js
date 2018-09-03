@@ -1,14 +1,18 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
-// start localization of the ball
+// ball informations
 var ballX = canvas.width/2;
 var ballY = 10;
+var ballColor = "#ff0000";
 
 // receptacle informations
 var receptacles = [];
 var widthReceptacle = canvas.width/3;
 var heightReceptacle = 20;
+
+// score
+var score = 50;
 
 // movement
 var rightPressed = false;
@@ -44,6 +48,12 @@ function draw() {
   drawReceptacles();
 
   colision();
+  isInGoodReceptacle();
+
+  if(score <= 0)
+    alert("GAME OVER");
+
+  displayScore();
 
   moveBall();
 }
@@ -53,15 +63,80 @@ setInterval(draw, 10);
 function colision(){
   if(ballX < 10 || ballX > canvas.width - 10)
   {
-    ballX = canvas.width/2;
-    ballY = 10;
+    initBallPosition();
+  }
+}
+
+function addColorToBall() {
+  switch (getRandomInt(3)) {
+    case 0:
+      ballColor = "#ff0000";
+      break;
+    case 1:
+      ballColor = "#00ff00";
+      break;
+    case 2:
+      ballColor = "#0000ff";
+      break;
+    default:
+      ballColor = "#ff0000";
+
+  }
+}
+
+function isInGoodReceptacle() {
+  if(ballY >= canvas.height - heightReceptacle)
+  {
+    for(var i = 0; i < 3; i ++)
+    {
+      if(ballX >= receptacles[i].x && ballX <= (receptacles[i].x + widthReceptacle))
+      {
+        if(ballColor === receptacles[i].color)
+        {
+          addPoint();
+        }
+        addColorToBall();
+        initBallPosition();
+      }
+    }
+  }
+}
+
+function initBallPosition() {
+  ballX = canvas.width/2;
+  ballY = 10;
+}
+
+function displayScore() {
+  document.getElementById("score").innerHTML = score;
+}
+
+function looseScore() {
+  score -=2;
+}
+
+setInterval(looseScore, 4000);
+
+function addPoint() {
+  switch (ballColor) {
+    case "#ff0000":
+      score += 2;
+      break;
+    case "#00ff00":
+      score += 3;
+      break;
+    case "#0000ff":
+      score += 4;
+      break;
+    default:
+      return;
   }
 }
 
 function drawBall() {
   ctx.beginPath();
   ctx.arc(ballX, ballY, 10, 0, Math.PI*2);
-  ctx.fillStyle = "#0095DD";
+  ctx.fillStyle = ballColor;
   ctx.fill();
   ctx.closePath();
 }
@@ -74,7 +149,7 @@ function moveBall() {
   {
     ballX += 1;
   }else {
-    ballY += 0.75;
+    ballY += 1.25;
   }
 }
 
@@ -116,4 +191,8 @@ function drawReceptacles() {
     ctx.fill();
     ctx.closePath();
   }
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
 }
