@@ -37,18 +37,26 @@ function keyUpHandler(e) {
 }
 
 function draw() {
-
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   drawBall();
   drawReceptacles();
 
+  colision();
+
   moveBall();
 }
 
 setInterval(draw, 10);
 
+function colision(){
+  if(ballX < 10 || ballX > canvas.width - 10)
+  {
+    ballX = canvas.width/2;
+    ballY = 10;
+  }
+}
 
 function drawBall() {
   ctx.beginPath();
@@ -73,7 +81,6 @@ function moveBall() {
 function initReceptacle() {
   for(var i = 0; i < 3; i ++)
   {
-
     var r = {
       x: i * widthReceptacle,
       y: canvas.height - heightReceptacle,
