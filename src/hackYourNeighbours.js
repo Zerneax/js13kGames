@@ -1,6 +1,8 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
+var start = true;
+
 // ball informations
 var file = new Image();
 file.src = './assets/file.png';
@@ -42,8 +44,9 @@ function keyDownHandler(e) {
     else if(e.keyCode == 37) {
         leftPressed = true;
     }
-    else if(e.keyCode == 13) {
+    else if(e.keyCode == 13 && start) {
       setInterval(draw, 10);
+      start = false;
     }
 }
 
@@ -70,9 +73,10 @@ function draw() {
 
   if(score <= 0)
     alert("You fail to DDOS your neighbours");
-  else if( score >= 100)
+  else if( score >= 60)
   {
-    alert("Your neighbours is OFFLINE");
+    alert("Good job !! Your neighbours is OFFLINE.");
+    start = true;
     document.location.reload();
   }
 
@@ -132,7 +136,6 @@ function isInGoodReceptacle() {
     {
       if(fileX >= receptacles[i].x && fileX <= (receptacles[i].x + widthReceptacle))
       {
-        console.log('color' , fileColor);
         if(fileColor === receptacles[i].color)
         {
           addPoint();
@@ -151,7 +154,7 @@ function initBallPosition() {
 }
 
 function displayScore() {
-  document.getElementById("score").innerHTML = score;
+  document.getElementById("score").innerHTML = "DDOS " + score + "%";
 }
 
 function looseScore() {
@@ -163,13 +166,13 @@ setInterval(looseScore, 3000);
 function addPoint() {
   switch (fileColor) {
     case "#ff0000":
-      score += 2;
+      score += 4;
       break;
     case "#00ff00":
-      score += 3;
+      score += 5;
       break;
     case "#0000ff":
-      score += 4;
+      score += 6;
       break;
     default:
       return;
