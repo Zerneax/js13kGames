@@ -11,6 +11,13 @@ var receptacles = [];
 var widthReceptacle = canvas.width/3;
 var heightReceptacle = 20;
 
+// obstacles
+var obstacles = [];
+var widthObstacle = canvas.width/3;
+var heightObstacle = 20;
+var paddingObstacle = 40;
+var offsetTopObstacle = 120;
+
 // score
 var score = 50;
 
@@ -19,6 +26,7 @@ var rightPressed = false;
 var leftPressed = false;
 
 initReceptacle();
+initObstacles();
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
@@ -46,6 +54,7 @@ function draw() {
 
   drawBall();
   drawReceptacles();
+  drawObstacles();
 
   colision();
   isInGoodReceptacle();
@@ -61,9 +70,23 @@ function draw() {
 setInterval(draw, 10);
 
 function colision(){
+  // colision with border of the canvas
   if(ballX < 10 || ballX > canvas.width - 10)
   {
     initBallPosition();
+  }
+  else {
+    // colision with black obstacles
+    for(var i = 0; i < 3; i ++)
+    {
+      if((ballX + 10) > obstacles[i].x && (ballX - 10) < (obstacles[i].x + widthObstacle))
+      {
+        if((ballY + 10) >  obstacles[i].y && (ballY - 10) < (obstacles[i].y + heightObstacle))
+        {
+          initBallPosition();
+        }
+      }
+    }
   }
 }
 
@@ -165,6 +188,17 @@ function initReceptacle() {
   }
 }
 
+function initObstacles() {
+  for(var i = 0; i < 3; i ++)
+  {
+    var o = {
+      x: i * widthObstacle,
+      y: (i * (heightObstacle + paddingObstacle)) + offsetTopObstacle
+    }
+    obstacles[i] = o;
+  }
+}
+
 function returnColor(i) {
   switch (i) {
     case 0:
@@ -188,6 +222,17 @@ function drawReceptacles() {
     ctx.beginPath();
     ctx.rect(receptacles[i].x, receptacles[i].y, widthReceptacle, heightReceptacle);
     ctx.fillStyle = receptacles[i].color;
+    ctx.fill();
+    ctx.closePath();
+  }
+}
+
+function drawObstacles() {
+  for(var i = 0; i < 3; i ++)
+  {
+    ctx.beginPath();
+    ctx.rect(obstacles[i].x, obstacles[i].y, widthObstacle, heightObstacle);
+    ctx.fillStyle = "#000000";
     ctx.fill();
     ctx.closePath();
   }
