@@ -6,7 +6,7 @@ var file = new Image();
 file.src = './assets/file.png';
 var fileX = canvas.width/2;
 var fileY = 10;
-var ballColor = "#ff0000";
+var fileColor = "#ff0000";
 var offsetCenterFile = 26;
 
 // receptacle informations
@@ -42,6 +42,9 @@ function keyDownHandler(e) {
     else if(e.keyCode == 37) {
         leftPressed = true;
     }
+    else if(e.keyCode == 13) {
+      setInterval(draw, 10);
+    }
 }
 
 function keyUpHandler(e) {
@@ -66,14 +69,18 @@ function draw() {
   isInGoodReceptacle();
 
   if(score <= 0)
-    alert("GAME OVER");
+    alert("You fail to DDOS your neighbours");
+  else if( score >= 100)
+  {
+    alert("Your neighbours is OFFLINE");
+    document.location.reload();
+  }
 
   displayScore();
 
   moveBall();
 }
 
-setInterval(draw, 10);
 
 function colision(){
   // colision with border of the canvas
@@ -100,22 +107,22 @@ function addColorToBall() {
   var colorOfFile = "";
   switch (getRandomInt(3)) {
     case 0:
-      ballColor = "#ff0000";
+      fileColor = "#ff0000";
       colorOfFile = "RED";
       break;
     case 1:
-      ballColor = "#00ff00";
+      fileColor = "#00ff00";
       colorOfFile = "GREEN";
       break;
     case 2:
-      ballColor = "#0000ff";
+      fileColor = "#0000ff";
       colorOfFile = "BLUE";
       break;
     default:
-      ballColor = "#ff0000";
+      fileColor = "#ff0000";
 
   }
-  document.getElementById("fileColor").innerHTML = colorOfFile;
+  document.getElementById("fileColor").innerHTML = "Destination of file : " + colorOfFile;
 }
 
 function isInGoodReceptacle() {
@@ -125,8 +132,8 @@ function isInGoodReceptacle() {
     {
       if(fileX >= receptacles[i].x && fileX <= (receptacles[i].x + widthReceptacle))
       {
-        console.log('color' , ballColor);
-        if(ballColor === receptacles[i].color)
+        console.log('color' , fileColor);
+        if(fileColor === receptacles[i].color)
         {
           addPoint();
           initObstacles();
@@ -154,7 +161,7 @@ function looseScore() {
 setInterval(looseScore, 3000);
 
 function addPoint() {
-  switch (ballColor) {
+  switch (fileColor) {
     case "#ff0000":
       score += 2;
       break;
