@@ -2,9 +2,12 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
 // ball informations
-var ballX = canvas.width/2;
-var ballY = 10;
+var file = new Image();
+file.src = './assets/file.png';
+var fileX = canvas.width/2;
+var fileY = 10;
 var ballColor = "#ff0000";
+var offsetCenterFile = 26;
 
 // receptacle informations
 var receptacles = [];
@@ -27,6 +30,7 @@ var leftPressed = false;
 
 initReceptacle();
 initObstacles();
+addColorToBall();
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -73,7 +77,7 @@ setInterval(draw, 10);
 
 function colision(){
   // colision with border of the canvas
-  if(ballX < 10 || ballX > canvas.width - 10)
+  if(fileX < offsetCenterFile || fileX > canvas.width - offsetCenterFile)
   {
     initBallPosition();
   }
@@ -81,9 +85,9 @@ function colision(){
     // colision with black obstacles
     for(var i = 0; i < 3; i ++)
     {
-      if((ballX + 10) > obstacles[i].x && (ballX - 10) < (obstacles[i].x + obstacles[i].w))
+      if((fileX + offsetCenterFile) > obstacles[i].x && (fileX) < (obstacles[i].x + obstacles[i].w))
       {
-        if((ballY + 10) >  obstacles[i].y && (ballY - 10) < (obstacles[i].y + heightObstacle))
+        if((fileY + offsetCenterFile) >  obstacles[i].y && (fileY) <  (obstacles[i].y + heightObstacle))
         {
           initBallPosition();
         }
@@ -93,29 +97,35 @@ function colision(){
 }
 
 function addColorToBall() {
+  var colorOfFile = "";
   switch (getRandomInt(3)) {
     case 0:
       ballColor = "#ff0000";
+      colorOfFile = "RED";
       break;
     case 1:
       ballColor = "#00ff00";
+      colorOfFile = "GREEN";
       break;
     case 2:
       ballColor = "#0000ff";
+      colorOfFile = "BLUE";
       break;
     default:
       ballColor = "#ff0000";
 
   }
+  document.getElementById("fileColor").innerHTML = colorOfFile;
 }
 
 function isInGoodReceptacle() {
-  if(ballY >= canvas.height - heightReceptacle)
+  if(fileY >= canvas.height - heightReceptacle)
   {
     for(var i = 0; i < 3; i ++)
     {
-      if(ballX >= receptacles[i].x && ballX <= (receptacles[i].x + widthReceptacle))
+      if(fileX >= receptacles[i].x && fileX <= (receptacles[i].x + widthReceptacle))
       {
+        console.log('color' , ballColor);
         if(ballColor === receptacles[i].color)
         {
           addPoint();
@@ -129,8 +139,8 @@ function isInGoodReceptacle() {
 }
 
 function initBallPosition() {
-  ballX = canvas.width/2;
-  ballY = 10;
+  fileX = canvas.width/2;
+  fileY = 10;
 }
 
 function displayScore() {
@@ -141,7 +151,7 @@ function looseScore() {
   score -=2;
 }
 
-setInterval(looseScore, 4000);
+setInterval(looseScore, 3000);
 
 function addPoint() {
   switch (ballColor) {
@@ -161,21 +171,19 @@ function addPoint() {
 
 function drawBall() {
   ctx.beginPath();
-  ctx.arc(ballX, ballY, 10, 0, Math.PI*2);
-  ctx.fillStyle = ballColor;
-  ctx.fill();
+  ctx.drawImage(file, fileX, fileY);
   ctx.closePath();
 }
 
 function moveBall() {
   if(leftPressed)
   {
-    ballX -= 1;
+    fileX -= 1;
   } else if(rightPressed)
   {
-    ballX += 1;
+    fileX += 1;
   }else {
-    ballY += 1.25;
+    fileY += 1.25;
   }
 }
 
