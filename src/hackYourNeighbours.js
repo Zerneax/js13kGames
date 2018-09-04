@@ -64,7 +64,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 
-  drawBall();
+  drawFile();
   drawReceptacles();
   drawObstacles();
 
@@ -82,7 +82,7 @@ function draw() {
 
   displayScore();
 
-  moveBall();
+  moveFile();
 }
 
 
@@ -179,13 +179,13 @@ function addPoint() {
   }
 }
 
-function drawBall() {
+function drawFile() {
   ctx.beginPath();
   ctx.drawImage(file, fileX, fileY);
   ctx.closePath();
 }
 
-function moveBall() {
+function moveFile() {
   if(leftPressed)
   {
     fileX -= 1;
