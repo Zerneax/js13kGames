@@ -27,6 +27,7 @@ var leftPressed = false;
 
 initReceptacle();
 initObstacles();
+
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
@@ -51,6 +52,7 @@ function keyUpHandler(e) {
 function draw() {
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 
   drawBall();
   drawReceptacles();
@@ -79,7 +81,7 @@ function colision(){
     // colision with black obstacles
     for(var i = 0; i < 3; i ++)
     {
-      if((ballX + 10) > obstacles[i].x && (ballX - 10) < (obstacles[i].x + widthObstacle))
+      if((ballX + 10) > obstacles[i].x && (ballX - 10) < (obstacles[i].x + obstacles[i].w))
       {
         if((ballY + 10) >  obstacles[i].y && (ballY - 10) < (obstacles[i].y + heightObstacle))
         {
@@ -117,6 +119,7 @@ function isInGoodReceptacle() {
         if(ballColor === receptacles[i].color)
         {
           addPoint();
+          initObstacles();
         }
         addColorToBall();
         initBallPosition();
@@ -193,7 +196,8 @@ function initObstacles() {
   {
     var o = {
       x: i * widthObstacle,
-      y: (i * (heightObstacle + paddingObstacle)) + offsetTopObstacle
+      y: (i * (heightObstacle + paddingObstacle)) + offsetTopObstacle,
+      w: 100 + getRandomInt(canvas.width / 3)
     }
     obstacles[i] = o;
   }
@@ -231,7 +235,7 @@ function drawObstacles() {
   for(var i = 0; i < 3; i ++)
   {
     ctx.beginPath();
-    ctx.rect(obstacles[i].x, obstacles[i].y, widthObstacle, heightObstacle);
+    ctx.rect(obstacles[i].x, obstacles[i].y, obstacles[i].w, heightObstacle);
     ctx.fillStyle = "#000000";
     ctx.fill();
     ctx.closePath();
