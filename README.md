@@ -3,7 +3,7 @@ Repository for js13kGames
 
 # introduction
 This is my first particpation in js13kGames :)
-And it's also my first game in js so please to be indulgent :)
+And it's also my first game in JS so please to be indulgent :)
 
 # game
 You must DDOS your neighbours because you don't like them.
