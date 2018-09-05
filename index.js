@@ -1,15 +1,16 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
+// is game started ?
 var start = true;
 
-// ball informations
+// file informations
 var file = new Image();
 file.src = 'file.png';
 var fileX = canvas.width/2;
 var fileY = 10;
 var fileColor = "#ff0000";
-var offsetCenterFile = 26;
+var fileSize = 26;
 
 // receptacle informations
 var receptacles = [];
@@ -47,7 +48,7 @@ function keyDownHandler(e) {
     else if(e.keyCode == 13 && start) {
       setInterval(draw, 5);
       start = false;
-      addColorToBall();
+      addColorToFile();
     }
 }
 
@@ -60,6 +61,7 @@ function keyUpHandler(e) {
     }
 }
 
+// main function -> interval 5 ms
 function draw() {
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -91,26 +93,28 @@ function draw() {
 
 function colision(){
   // colision with border of the canvas
-  if(fileX < offsetCenterFile || fileX > canvas.width - offsetCenterFile)
+  if(fileX < fileSize || fileX > canvas.width - fileSize)
   {
-    initBallPosition();
+    initFilePosition();
   }
   else {
     // colision with black obstacles
     for(var i = 0; i < 3; i ++)
     {
-      if((fileX + offsetCenterFile) > obstacles[i].x && (fileX) < (obstacles[i].x + obstacles[i].w))
+      if((fileX + fileSize) > obstacles[i].x && (fileX) < (obstacles[i].x + obstacles[i].w))
       {
-        if((fileY + offsetCenterFile) >  obstacles[i].y && (fileY) <  (obstacles[i].y + heightObstacle))
+        if((fileY + fileSize) >  obstacles[i].y && (fileY) <  (obstacles[i].y + heightObstacle))
         {
-          initBallPosition();
+          // if there are a colision with obstacles = reinit the file position
+          initFilePosition();
         }
       }
     }
   }
 }
 
-function addColorToBall() {
+// destination of the file
+function addColorToFile() {
   var colorOfFile = "";
   switch (getRandomInt(3)) {
     case 0:
@@ -133,6 +137,7 @@ function addColorToBall() {
   document.getElementById("fileColor").innerHTML = "Destination of file : " + colorOfFile;
 }
 
+
 function isInGoodReceptacle() {
   if(fileY >= canvas.height - heightReceptacle)
   {
@@ -145,14 +150,14 @@ function isInGoodReceptacle() {
           addPoint();
           initObstacles();
         }
-        addColorToBall();
-        initBallPosition();
+        addColorToFile();
+        initFilePosition();
       }
     }
   }
 }
 
-function initBallPosition() {
+function initFilePosition() {
   fileX = canvas.width/2;
   fileY = 10;
 }
@@ -161,6 +166,7 @@ function displayScore() {
   document.getElementById("score").innerHTML = "DDOS " + score + "%";
 }
 
+// Loose score every 3s
 function looseScore() {
   score -=2;
 }
