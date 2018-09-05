@@ -77,6 +77,8 @@ function draw() {
   {
     displayScore();
     alert("You fail to DDOS your neighbours");
+    start = true;
+    document.location.reload();
   } else if( score >= 100)
   {
     displayScore();
