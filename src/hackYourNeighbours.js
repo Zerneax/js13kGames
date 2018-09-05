@@ -32,7 +32,7 @@ var leftPressed = false;
 
 initReceptacle();
 initObstacles();
-addColorToBall();
+
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -45,8 +45,9 @@ function keyDownHandler(e) {
         leftPressed = true;
     }
     else if(e.keyCode == 13 && start) {
-      setInterval(draw, 10);
+      setInterval(draw, 5);
       start = false;
+      addColorToBall();
     }
 }
 
@@ -63,7 +64,6 @@ function draw() {
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-
   drawFile();
   drawReceptacles();
   drawObstacles();
@@ -72,9 +72,12 @@ function draw() {
   isInGoodReceptacle();
 
   if(score <= 0)
-    alert("You fail to DDOS your neighbours");
-  else if( score >= 60)
   {
+    displayScore();
+    alert("You fail to DDOS your neighbours");
+  } else if( score >= 100)
+  {
+    displayScore();
     alert("Good job !! Your neighbours is OFFLINE.");
     start = true;
     document.location.reload();
@@ -170,10 +173,10 @@ function addPoint() {
       score += 4;
       break;
     case "#00ff00":
-      score += 5;
+      score += 7;
       break;
     case "#0000ff":
-      score += 6;
+      score += 10;
       break;
     default:
       return;
@@ -189,10 +192,10 @@ function drawFile() {
 function moveFile() {
   if(leftPressed)
   {
-    fileX -= 1;
+    fileX -= 1.25;
   } else if(rightPressed)
   {
-    fileX += 1;
+    fileX += 1.25;
   }else {
     fileY += 1.25;
   }
