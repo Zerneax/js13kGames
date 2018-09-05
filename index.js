@@ -82,7 +82,7 @@ function draw() {
   } else if( score >= 100)
   {
     displayScore();
-    alert("Good job !! Your neighbours is OFFLINE.");
+    alert("Good job !! Your neighbours are OFFLINE.");
     start = true;
     document.location.reload();
   }
