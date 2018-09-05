@@ -126,6 +126,7 @@ function addColorToBall() {
       fileColor = "#ff0000";
 
   }
+  document.getElementById("fileColor").style.color = colorOfFile;
   document.getElementById("fileColor").innerHTML = "Destination of file : " + colorOfFile;
 }
 
